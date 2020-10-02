@@ -1,13 +1,46 @@
 (ns app.client
   (:require
-   [com.fulcrologic.fulcro.application :as app]
-   [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
-   [com.fulcrologic.fulcro.dom :as dom]))
+    [com.fulcrologic.fulcro.application :as app]
+    [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
+    [com.fulcrologic.fulcro.dom :as dom]))
 
 (defonce app (app/fulcro-app))
 
+(def cards
+  [{:title   "Hello"
+    :message "Lorem ipsum dolor sit amet, consectetur adipisicing elit."}
+   {:title   "Hello"
+    :message "Lorem ipsum dolor sit amet, consectetur adipisicing elit."}
+   {:title   "Hello"
+    :message "Lorem ipsum dolor sit amet, consectetur adipisicing elit."}
+   {:title   "Hello"
+    :message "Lorem ipsum dolor sit amet, consectetur adipisicing elit."}
+   {:title   "Hello"
+    :message "Lorem ipsum dolor sit amet, consectetur adipisicing elit."}
+   {:title   "Hello"
+    :message "Lorem ipsum dolor sit amet, consectetur adipisicing elit."}
+   {:title   "Hello"
+    :message "Lorem ipsum dolor sit amet, consectetur adipisicing elit."}])
+
+
+(defsc Card [this {:keys [title message]}]
+  (dom/div
+    (dom/div :.uk-card.uk-card-primary.uk-card-body
+             (dom/h3 :.uk-card-title title)
+             (dom/p message))))
+
+(def card-ui (comp/factory Card))
+
 (defsc Root [this props]
-  (dom/div "TODO"))
+  (dom/div
+    (dom/div
+      {:uk-grid ""
+       :class "uk-child-width-1-3@m uk-grid-small uk-grid-match"
+       :uk-sortable "handle: .uk-card"}
+      (doall (for [card cards] (card-ui card))))
+    (dom/div
+      :.uk-overlay.uk-overlay-primary.uk-position-bottom
+      (dom/button :.uk-button.uk-button-primary "Create"))))
 
 (defn ^:export init
   "Shadow-cljs sets this up to be our entry-point function. See shadow-cljs.edn `:init-fn` in the modules of the main build."
